@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diddy Simulator 🔪</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #1e1e1e, #121212);
+            color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            animation: fadeIn 1s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        h1 {
+            font-size: 3em;
+            margin: 20px 0;
+            color: #ffcc00;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.8);
+        }
+        #diddy {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            cursor: pointer;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.9);
+            transition: transform 0.5s, box-shadow 0.5s;
+            margin: 20px auto;
+        }
+        #diddy:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 1);
+        }
+        #container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 30px;
+            margin: 20px;
+            flex-wrap: wrap;
+        }
+        #stats {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 30px; 
+            margin: 20px;
+            display: inline-block;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            width: 300px;
+            backdrop-filter: blur(5px);
+        }
+        .stat {
+            font-size: 1.5em;  
+            margin: 10px 0;
+            color: #e0e0e0;
+            text-align: left;
+            font-family: 'Courier New', Courier, monospace;
+            transition: color 0.3s;
+        }
+        .stat:hover {
+            color: #ffcc00;
+        }
+        #upgrades {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            margin: 20px;
+            backdrop-filter: blur(5px);
+        }
+        .upgrade {
+            margin: 10px 0;
+            padding: 15px;
+            border: 2px solid #ffcc00;
+            border-radius: 10px;
+            background-color: #660000;
+            color: #ffcc00;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+            font-size: 1.2em; 
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .upgrade:hover {
+            background-color: #c70039;
+            color: #ffffff;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+        }
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        @media only screen and (max-width: 600px) {
+            #diddy {
+                width: 80%;
+                height: auto;
+            }
+            #stats {
+                width: 90%;
+                padding: 15px;
+            }
+            .upgrade {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main>
+        <h1>Diddy Simulator 🔪</h1>
+        <div id="container">
+            <img id="diddy" src="https://github.com/diddysimulator/diddysimulator.github.io/blob/main/pics/diddy.png?raw=true" alt="Diddy" onclick="onDiddyIconClick()">
+            
+            <section id="stats">
+                <p class="stat" id="kidsCounter">👦 Kids: 0</p>
+                <p class="stat" id="kidsPerSecond">⚡ Kids per second: 0</p>
+                <p class="stat" id="babyOilCount">🚿 Baby Oil: 0</p>
+                <p class="stat" id="drakeCount">🔥 Drake: 0</p>
+                <p class="stat" id="mjCount">🎤 Michael Jackson: 0</p>
+                <p class="stat" id="lebronCount">🏀 LeBron James: 0</p>
+                <p class="stat" id="justinCount">🎤 Justin Bieber: 0</p>
+                <p class="stat" id="candyVanCount">🍭 Candy Van: 0</p>
+            </section>
+
+            <section id="upgrades">
+                <div class="upgrade" onclick="buyBabyOil()">Apply Baby Oil 🚿 (Cost: 50 Kids)</div>
+                <div class="upgrade" onclick="buyDrake()">Invite Drake 🔥 (Cost: 300 Kids)</div>
+                <div class="upgrade" onclick="buyMichaelJackson()">Invite Michael Jackson 🎤 (Cost: 600 Kids)</div>
+                <div class="upgrade" onclick="buyLeBronJames()">Invite LeBron James 🏀 (Cost: 1200 Kids)</div>
+                <div class="upgrade" onclick="buyJustinBieber()">Invite Justin Bieber 🎤 (Cost: 800 Kids)</div>
+                <div class="upgrade" onclick="buyCandyVan()">Buy Candy Van 🍭 (Cost: 1500 Kids)</div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        let kids = 0;
+        let kidsPerSecond = 0;
+        let babyOilCount = 0;
+        let drakeCount = 0;
+        let mjCount = 0;
+        let lebronCount = 0;
+        let justinCount = 0;
+        let candyVanCount = 0;
+
+        function onDiddyIconClick() {
+            kids++;
+            updateDisplay();
+        }
+
+        function buyBabyOil() {
+            if (kids >= 50) {
+                kids -= 50;
+                babyOilCount++;
+                kidsPerSecond += 1;
+                updateDisplay();
+            }
+        }
+
+        function buyDrake() {
+            if (kids >= 300) {
+                kids -= 300;
+                drakeCount++;
+                kidsPerSecond += 5;
+                updateDisplay();
+            }
+        }
+
+        function buyMichaelJackson() {
+            if (kids >= 600) {
+                kids -= 600;
+                mjCount++;
+                kidsPerSecond += 8;
+                updateDisplay();
+            }
+        }
+
+        function buyLeBronJames() {
+            if (kids >= 1200) {
+                kids -= 1200;
+                lebronCount++;
+                kidsPerSecond += 12;
+                updateDisplay();
+            }
+        }
+
+        function buyJustinBieber() {
+            if (kids >= 800) {
+                kids -= 800;
+                justinCount++;
+                kidsPerSecond += 10;
+                updateDisplay();
+            }
+        }
+
+        function buyCandyVan() {
+            if (kids >= 1500) {
+                kids -= 1500;
+                candyVanCount++;
+                kidsPerSecond += 15;
+                updateDisplay();
+            }
+        }
+
+        function updateDisplay() {
+            document.getElementById("kidsCounter").innerText = "👦 Kids: " + kids;
+            document.getElementById("kidsPerSecond").innerText = "⚡ Kids per second: " + kidsPerSecond;
+            document.getElementById("babyOilCount").innerText = "🚿 Baby Oil: " + babyOilCount;
+            document.getElementById("drakeCount").innerText = "🔥 Drake: " + drakeCount;
+            document.getElementById("mjCount").innerText = "🎤 Michael Jackson: " + mjCount;
+            document.getElementById("lebronCount").innerText = "🏀 LeBron James: " + lebronCount;
+            document.getElementById("justinCount").innerText = "🎤 Justin Bieber: " + justinCount;
+            document.getElementById("candyVanCount").innerText = "🍭 Candy Van: " + candyVanCount;
+        }
+
+        function updateKidsPerSecond() {
+            kids += kidsPerSecond;
+            updateDisplay();
+        }
+
+        setInterval(updateKidsPerSecond, 1000);
+    </script>
+
+</body>
+</html>
